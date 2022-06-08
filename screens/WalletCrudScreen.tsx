@@ -1,15 +1,20 @@
 import React from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import NewWalletForm from "../components/NewWalletFormComponent";
-
 
 const WalletCrudScreen = () => {
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
             <NewWalletForm />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+});
 
 export default WalletCrudScreen;

@@ -14,7 +14,9 @@ export type RootStackParams = {
   WalletTransactions: {
     name: string;
   }
-  WalletCrud: undefined;
+  WalletCrud: {
+    action: string;
+  }
   WalletOverview: undefined;
 }
 
@@ -29,24 +31,30 @@ export default function App() {
         <Stack.Screen name="Wallet" component={WalletScreen} options={{
             headerShown: false,
             presentation: 'card',
-            animationTypeForReplace: 'pop',
+            animationTypeForReplace: 'push',
             animation: 'slide_from_bottom',
         }} />
         <Stack.Screen name="WalletTransactions" component={WalletTransactionsScreen} options={{
           headerShown: false,
           presentation: 'card',
-          animationTypeForReplace: 'pop',
+          animationTypeForReplace: 'push',
           animation: 'slide_from_bottom',
         }}
         />
           <Stack.Screen name="WalletOverview" component={WalletOverviewScreen} options={{
             headerShown: false,
+            headerTitleAlign: "center",
             presentation: 'card',
-            animationTypeForReplace: 'pop',
+            animationTypeForReplace: 'push',
             animation: 'slide_from_bottom',
           }}
           />
-          <Stack.Screen name="WalletCrud" component={WalletCrudScreen} />
+          <Stack.Screen name="WalletCrud" component={WalletCrudScreen} options={{
+            headerShown: false,
+            presentation: 'card',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_bottom',
+          }} />
       </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
