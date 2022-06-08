@@ -3,7 +3,7 @@ import { MMKVLoader } from 'react-native-mmkv-storage';
 
 let storage = new MMKVLoader().withEncryption().initialize();
 
-const setNodeDetails = (name: string, url: string, macaroon: string) => {
+const setNodeDetailsHook = (name: string, url: string, macaroon: string) => {
 
     let [done, setDone] = useState(false);
 
@@ -29,4 +29,4 @@ const setNodeDetails = (name: string, url: string, macaroon: string) => {
 
 }
 
-export default setNodeDetails;
+export default setNodeDetailsHook;

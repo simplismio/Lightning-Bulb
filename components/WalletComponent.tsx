@@ -3,11 +3,15 @@ import React from 'react';
 import WalletBody from './WalletBodyComponent'
 import WalletSendReceiveButtons from './WalletSendReceiveButtonsComponent'
 import WalletTransactionsIcon from './WalletTransactionsIconComponent'
+import WalletOverviewIconComponent from "./WalletOverviewIconComponent";
 
 const WalletComponent = () => {
 
     return (
         <View style={styles.container}>
+            <View>
+                <WalletOverviewIconComponent />
+            </View>
             <View style={styles.walletBalance}>
                 <WalletBody />
             </View>

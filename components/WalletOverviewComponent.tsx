@@ -1,16 +1,15 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from 'react';
-import useAllWalletDetails from "../hooks/useAllWalletDetailsHook";
+import useAllWalletsDetails from "../hooks/useAllWalletsDetailsHook";
 import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../App";
 
 const WalletOverviewComponent = () => {
-    const allNodesRaw: any = useAllWalletDetails();
+    const allNodesRaw: any = useAllWalletsDetails();
     let allNodes: any = allNodesRaw['allNodes'];
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
-
 
     return (
         <View style={styles.container}>

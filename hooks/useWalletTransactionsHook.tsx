@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import Tor from "react-native-tor";
 
 
-const useLndTransactions = (key: string, api: string) => {
+const useLndTransactionsHook = (key: string, api: string) => {
 
     let [lightningTransactions, setlightningTransactions] = useState(null);
     let [pending, setPending] = useState(false);
     let [error, setError] = useState(null);
 
     useEffect(() => {
-        //let isSubscribed = true;
         const loadNodeConnectionDetails = async (key: string, api: string) => {
             setPending(true);
             const value: any = '' //TODO HERE MMKV LOAD OF KEY
@@ -50,4 +49,4 @@ const useLndTransactions = (key: string, api: string) => {
 
 }
 
-export default useLndTransactions;
+export default useLndTransactionsHook;

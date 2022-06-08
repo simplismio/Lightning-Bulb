@@ -12,7 +12,7 @@ const WalletTransactionsIconComponent = () => {
     return (
         <View>
             <Icon
-                name='md-chevron-up'
+                name='md-chevron-down'
                 type='ionicon'
                 size={50}
                 style={styles.centerButton}

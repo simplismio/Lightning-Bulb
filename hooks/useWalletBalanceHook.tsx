@@ -1,50 +1,48 @@
 import { useState, useEffect } from 'react';
 import Tor from "react-native-tor";
+import { MMKVLoader } from 'react-native-mmkv-storage';
 
+let storage = new MMKVLoader().withEncryption().initialize();
 
-const useLndBalance = (url: string, macaroon: string, api: string) => {
+const useWalletBalanceHook = (_name: any, _api: any) => {
 
-    let [lightningBalance, setlightningBalance] = useState(null);
+    let [balance, setBalance] = useState('');
     let [pending, setPending] = useState(false);
-    let [error, setError] = useState(null);
+    let [errorDetails, setError] = useState('');
+
+    const tor = Tor({
+        stopDaemonOnBackground: true, // Auto shut down daemon when app in background
+    });
 
     useEffect(() => {
-        const loadNodeConnectionDetails = async (url: string, macaroon: string, api: string) => {
-            setPending(true);
 
-            console.log(url);
-            console.log(macaroon);
+        const loadNodeConnectionDetails = async (__name, __api: any) => {    
+      
+                let walletDetailsArray: any = await storage.getArrayAsync(__name);
+                setPending(true);
 
-            const tor = Tor({
-                stopDaemonOnBackground: true, // Auto shut down daemon when app in background
-            });
-            tor.stopIfRunning();
-            console.log('Starting Tor connection');
+                const socksProxy = await tor.startIfNotStarted();
+                console.log('Tor proxy ' + socksProxy + ' started');
 
-            const socksProxy = await tor.startIfNotStarted();
-            console.log('Tor proxy ' + socksProxy + ' started');
+                try {
+                    const rawResponse = await tor.get(walletDetailsArray[1] + __api, { 'Grpc-Metadata-macaroon': walletDetailsArray[2], 'Content-Type': 'application/json' });
+                    const response: any = rawResponse;
+                    setBalance(response['json']['balance']);
+                    setPending(false);
+                } catch (error) {
+                    console.log(error);
+                    const errorMessage: any = error;
 
-            try {
-                const rawResponse = await tor.get(url + api, { 'Grpc-Metadata-macaroon': macaroon, 'Content-Type': 'application/json' });
-
-                const response: any = rawResponse;
-                setlightningBalance(response['json']['balance']);
-                setPending(false);
-                tor.stopIfRunning();
-
-            } catch (error) {
-                console.log(error);
-                const errorMessage: any = error;
-
-                setError(errorMessage);
-            }
+                    setError(errorMessage);
+                }
+                tor.stopIfRunning(); 
         }
-        loadNodeConnectionDetails(url, macaroon, api)
-            .catch(console.error)
+        loadNodeConnectionDetails(_name, _api).catch(console.error)
+
     }, []);
 
-    return { lightningBalance, pending, error };
+    return { balance, pending, errorDetails };
 
 }
 
-export default useLndBalance;
+export default useWalletBalanceHook;

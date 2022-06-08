@@ -27,20 +27,25 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="WalletOverview">
         <Stack.Screen name="Wallet" component={WalletScreen} options={{
-          headerShown: true,
-          headerBackTitle: '',
-          headerTitle: '',
-          headerTitleAlign: 'center',
-          headerTransparent: true
+            headerShown: false,
+            presentation: 'card',
+            animationTypeForReplace: 'pop',
+            animation: 'slide_from_bottom',
         }} />
         <Stack.Screen name="WalletTransactions" component={WalletTransactionsScreen} options={{
-          headerShown: true,
+          headerShown: false,
           presentation: 'card',
-          animationTypeForReplace: 'push',
+          animationTypeForReplace: 'pop',
           animation: 'slide_from_bottom',
         }}
         />
-          <Stack.Screen name="WalletOverview" component={WalletOverviewScreen} />
+          <Stack.Screen name="WalletOverview" component={WalletOverviewScreen} options={{
+            headerShown: false,
+            presentation: 'card',
+            animationTypeForReplace: 'pop',
+            animation: 'slide_from_bottom',
+          }}
+          />
           <Stack.Screen name="WalletCrud" component={WalletCrudScreen} />
       </Stack.Navigator>
       </NavigationContainer>
