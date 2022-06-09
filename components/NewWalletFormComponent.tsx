@@ -8,6 +8,8 @@ import { RootStackParams } from "../App";
 import { Input, Icon } from '@rneui/themed';
 import { Button } from '@rneui/base';
 import { Dropdown } from 'react-native-element-dropdown';
+import NavigationIconComponent from "./NavigationIconComponent";
+import NavigationContext from "../contexts/NavigationContext";
 
 const NewWalletFormComponent = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
@@ -23,7 +25,7 @@ const NewWalletFormComponent = () => {
         }
     });
 
-    const data = [
+    const interfaces = [
         { label: 'LND', value: 'lnd' },
         { label: 'LightningHub', value: 'lightninghub' },
         { label: 'Eclair', value: 'eclair' },
@@ -36,10 +38,10 @@ const NewWalletFormComponent = () => {
     const onSubmit = async (data: any) => {
 
         var nodeDetails = [
-            data['interface'],
-            data['name'],
-            data['url'],
-            data['macaroon'],
+            interfaces['interface'],
+            interfaces['name'],
+            interfaces['url'],
+            interfaces['macaroon'],
         ];
         try {
             await storage.setArrayAsync(data['name'], nodeDetails);
@@ -50,18 +52,23 @@ const NewWalletFormComponent = () => {
         }
     };
 
-
+    let navigationParams: any = [true, 'WalletOverview', 'md-chevron-up'];
     const [value, setValue] = useState(null);
-
 
     return (
         <View style={styles.container}>
+
+            <NavigationContext.Provider value={navigationParams}>
+                <NavigationIconComponent />
+            </NavigationContext.Provider> 
+
+            <View style={styles.form}>
             <Dropdown
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
-                data={data}
+                data={interfaces}
                 search
                 maxHeight={300}
                 labelField="label"
@@ -82,8 +89,7 @@ const NewWalletFormComponent = () => {
                     />
                 )}
             />
-            
-
+        
                             <Controller
                                 control={control}
                                 rules={{
@@ -164,12 +170,13 @@ const NewWalletFormComponent = () => {
             />
             {errors.name && <Text>This is required.</Text>}
 
+
             <Button
                 title="Save Wallet"
                 style={styles.button}
                 buttonStyle={{ backgroundColor: 'black' }}
                 onPress={handleSubmit(onSubmit)}
-            />
+                /></View>
         </View>
     );
 }
@@ -179,6 +186,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 30,
         backgroundColor: 'white',
+    },
+    form: {
+        marginTop: 30
     },
     input: {
         padding: 10,
@@ -191,7 +201,6 @@ const styles = StyleSheet.create({
         color: 'black',
         padding: 10,
     },
-
     dropdown: {
         height: 70,
         paddingHorizontal: 8,

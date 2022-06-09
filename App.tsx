@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import WalletScreen from './screens/WalletScreen';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import WalletTransactionsScreen from './screens/WalletTransactionsScreen';
+import WalletTransactionOverviewScreen from './screens/WalletTransactionOverviewScreen';
 import WalletOverviewScreen from './screens/WalletOverviewScreen';
 import WalletCrudScreen from './screens/WalletCrudScreen';
 
@@ -11,9 +11,7 @@ export type RootStackParams = {
   Wallet: {
     name: string;
   }
-  WalletTransactions: {
-    name: string;
-  }
+  WalletTransactionOverview: undefined
   WalletCrud: {
     action: string;
   }
@@ -34,7 +32,7 @@ export default function App() {
             animationTypeForReplace: 'push',
             animation: 'slide_from_bottom',
         }} />
-        <Stack.Screen name="WalletTransactions" component={WalletTransactionsScreen} options={{
+        <Stack.Screen name="WalletTransactionOverview" component={WalletTransactionOverviewScreen} options={{
           headerShown: false,
           presentation: 'card',
           animationTypeForReplace: 'push',

@@ -1,16 +1,21 @@
 import { View, StyleSheet } from "react-native";
-import React from 'react';
+import React, {useContext} from 'react';
 import WalletBody from './WalletBodyComponent'
 import WalletSendReceiveButtons from './WalletSendReceiveButtonsComponent'
-import WalletTransactionsIcon from './WalletTransactionsIconComponent'
-import WalletOverviewIconComponent from "./WalletOverviewIconComponent";
+import NavigationContext from "../contexts/NavigationContext";
+import NavigationIconComponent from "./NavigationIconComponent";
 
 const WalletComponent = () => {
+
+    let navigationParamsWallets: any = [true, 'WalletOverview', 'md-chevron-up'];
+    let navigationParamsTransactions: any = [false, 'WalletTransactionOverview', 'md-chevron-down'];
 
     return (
         <View style={styles.container}>
             <View>
-                <WalletOverviewIconComponent />
+                <NavigationContext.Provider value={navigationParamsWallets}>
+                    <NavigationIconComponent />
+                </NavigationContext.Provider> 
             </View>
             <View style={styles.walletBalance}>
                 <WalletBody />
@@ -19,10 +24,12 @@ const WalletComponent = () => {
                 <WalletSendReceiveButtons />
             </View>
             <View style={styles.transactionsIcon}>
-                <WalletTransactionsIcon />
+                <NavigationContext.Provider value={navigationParamsTransactions}>
+                    <NavigationIconComponent />
+                </NavigationContext.Provider> 
             </View>
             </View>
-           );
+        );
 }
 
 const styles = StyleSheet.create({

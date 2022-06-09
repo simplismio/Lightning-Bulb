@@ -3,18 +3,18 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { RootStackParams } from '../App';
 import Wallet from '../components/WalletComponent';
-import ActiveWalletNameContext from "../contexts/WalletContext";
+import ActiveWalletContext from '../contexts/ActiveWalletContext';
 
 type Props = NativeStackScreenProps<RootStackParams, "Wallet">;
 
 const WalletScreen: React.FC<Props> = ({ route }) => {
 
+    //TODO: move context to component and remove routing variable
+
     return (
-        <ActiveWalletNameContext.Provider value={route.params.name}>
         <View style={styles.container}>
             <Wallet />
             </View>
-        </ActiveWalletNameContext.Provider> 
     );
 }
 

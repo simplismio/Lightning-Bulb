@@ -2,11 +2,11 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import React from 'react';
 import useWalletBalanceHook from "../hooks/useWalletBalanceHook";
 import { useContext } from "react";
-import ActiveWalletNameContext from "../contexts/WalletContext";
+import ActiveWalletContext from "../contexts/ActiveWalletContext";
 
 const WalletBodyComponent = () => {
 
-    let wallet: string = useContext(ActiveWalletNameContext);
+    let wallet: string = useContext(ActiveWalletContext);
     let balance: any = useWalletBalanceHook(wallet, '/v1/balance/channels');
 
     return (
