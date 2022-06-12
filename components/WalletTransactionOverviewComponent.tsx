@@ -1,17 +1,20 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import React, {useContext} from 'react';
 import ActiveWalletContext from "../contexts/ActiveWalletContext";
-import useWalletTransactionsHook from "../hooks/useWalletTransactionsHook";
+import useWalletFetchHook from "../hooks/useWalletFetchHook";
 import NavigationContext from "../contexts/NavigationContext";
 import NavigationIconComponent from "./NavigationIconComponent";
 
 const WalletTransactionOverviewComponent = () => {
 
-    let wallet: string = useContext(ActiveWalletContext);
+    let wallet: any = useContext(ActiveWalletContext);
+    let response = useWalletFetchHook(wallet, '/v1/payments');
 
-    //let transactions = useWalletTransactionsHook(wallet, '/v1/transactions');
+        console.log(response['json']);
 
-    let navigationParams: any = [true, 'Wallet', 'md-chevron-up'];
+    
+
+    let navigationParams: any = [true, 'Wallet', 'md-chevron-up', wallet];
 
     return (
         <View>

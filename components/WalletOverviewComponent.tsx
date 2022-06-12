@@ -12,6 +12,10 @@ import NavigationIconComponent from "./NavigationIconComponent";
 const WalletOverviewComponent = () => {
     let allWalletsRaw: any = useAllWalletsDetails();
     let allWallets: any = allWalletsRaw['allNodes'];
+
+    //console.log(allWallets);
+
+
     let navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
     let navigationParamsTransactions: any = [false, 'WalletCrud', 'md-add-circle-outline'];
     let activeWallet: string; 
@@ -19,8 +23,7 @@ const WalletOverviewComponent = () => {
 
     const onClick = async (name: any) => {
         activeWallet = name['name']
-        //console.log(activeWallet);
-        navigation.navigate('Wallet', {activeWallet: activeWallet})
+        navigation.navigate('Wallet', { params: activeWallet })
     };
 
     return (
@@ -30,11 +33,10 @@ const WalletOverviewComponent = () => {
                     {allWallets.length > 0 ? allWallets.map((key: any) => {
                             return (
                                     <Pressable key={key} onPress={() => {
-                                        onClick({ name: key[1][1] })
+                                        onClick({ name: key[1][0]["name"] })
                                 }}>
-                                        <Card.Title style={styles.card}>{key[1][1]}
+                                        <Card.Title style={styles.card}>{key[1][0]["name"]}
                                         </Card.Title>
-
                                     </Pressable>
                             )
                         }) : <Text style={styles.empty}>Please add a wallet</Text>} 

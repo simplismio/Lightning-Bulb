@@ -9,9 +9,11 @@ import WalletCrudScreen from './screens/WalletCrudScreen';
 
 export type RootStackParams = {
   Wallet: {
-    activeWallet: string;
+    params: any;
   }
-  WalletTransactionOverview: undefined
+  WalletTransactionOverview: {
+    params: any;
+  }
   WalletCrud: {
     action: string;
   }

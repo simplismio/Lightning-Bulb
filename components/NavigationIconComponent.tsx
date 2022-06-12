@@ -13,6 +13,7 @@ const NavigationIconComponent = () => {
     let back: boolean = navigationParams[0] ;
     let direction: any = navigationParams[1];
     let icon: any = navigationParams[2];
+    let params: any = navigationParams[3] != null ? navigationParams[3] : null
 
     return (
         <View>
@@ -22,7 +23,7 @@ const NavigationIconComponent = () => {
                 size={50}
                 style={styles.icon}
                 onPress={() => {
-                    navigation.navigate(direction)
+                    params != null ? navigation.navigate(direction, { params: params }) : navigation.navigate(direction) //TODO: include option to push and pop
                 }}
             /> : <Icon
                     name={icon}
@@ -30,7 +31,7 @@ const NavigationIconComponent = () => {
                 size={50}
                 style={styles.icon}
                 onPress={() => {
-                    navigation.navigate(direction)
+                    params != null ? navigation.navigate(direction, { params: params }) : navigation.navigate(direction) //TODO: include option to push and pop
                 }}
             />}
         </View>

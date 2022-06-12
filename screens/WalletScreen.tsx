@@ -10,7 +10,7 @@ type Props = NativeStackScreenProps<RootStackParams, "Wallet">;
 const WalletScreen: React.FC<Props> = ({ route }) => {
 
     return (
-        <ActiveWalletContext.Provider value={route.params.activeWallet}>
+        <ActiveWalletContext.Provider value={route.params.params}>
         <View style={styles.container}>
             <Wallet />
             </View>
