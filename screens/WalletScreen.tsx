@@ -9,12 +9,13 @@ type Props = NativeStackScreenProps<RootStackParams, "Wallet">;
 
 const WalletScreen: React.FC<Props> = ({ route }) => {
 
-    //TODO: move context to component and remove routing variable
-
     return (
+        <ActiveWalletContext.Provider value={route.params.activeWallet}>
         <View style={styles.container}>
             <Wallet />
             </View>
+        </ActiveWalletContext.Provider>
+
     );
 }
 

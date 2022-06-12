@@ -1,13 +1,11 @@
-import { View, Text, StyleSheet} from "react-native";
-import React, { useState } from 'react';
-import { useForm, Controller } from "react-hook-form";
+import { View, Text, StyleSheet } from "react-native";
+import React, { useRef, useState } from 'react';
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../App";
-import { Input, Icon } from '@rneui/themed';
+import { Form, FormItem, Picker, Modal } from 'react-native-form-component';
 import { Button } from '@rneui/base';
-import { Dropdown } from 'react-native-element-dropdown';
 import NavigationIconComponent from "./NavigationIconComponent";
 import NavigationContext from "../contexts/NavigationContext";
 
@@ -16,35 +14,33 @@ const NewWalletFormComponent = () => {
 
     let storage = new MMKVLoader().withEncryption().initialize();
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-            interface: '',
-            name: '',
-            url: '',
-            macaroon: ''
-        }
-    });
+    const walletNameInput = useRef();
+    const urlInput = useRef();
+    const macaroonInput = useRef();
 
-    const interfaces = [
-        { label: 'LND', value: 'lnd' },
-        { label: 'LightningHub', value: 'lightninghub' },
-        { label: 'Eclair', value: 'eclair' },
-        { label: 'Lightning Core', value: 'lightningcore' },
-        { label: 'C-Lightning REST', value: 'clightningrest' },
-        { label: 'Spark', value: 'spark' },
+    const [interfaceName, setInterfaceName] = useState('');
+    const [walletName, setWalletName] = useState('');
+    const [url, setUrl] = useState('');
+    const [macaroon, setMacaroon] = useState('');
 
-    ];
+    console.log(interfaceName);
+    console.log(walletName);
+    console.log(url);
+    console.log(macaroon);
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async () => {
+
+        console.log('Ready to submit');
 
         var nodeDetails = [
-            interfaces['interface'],
-            interfaces['name'],
-            interfaces['url'],
-            interfaces['macaroon'],
+            'Lnd',
+            walletName,
+            'https://zloeuiaujibqmvkdxzgflytli34bkwzg3b5wp3fmqzrpfpvakjxnx4ad.onion:8080',
+            '0201036c6e6402f801030a108d2a861dd90e17121432311dc248787d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620c827db1e3a48ecb803b3a9837e5fc7da9781805a3506681f3b766e382a1a3781',
         ];
         try {
-            await storage.setArrayAsync(data['name'], nodeDetails);
+
+            await storage.setArrayAsync('Umbrel', nodeDetails);
             navigation.navigate('WalletOverview')
         }
         catch (err: any) {
@@ -53,130 +49,68 @@ const NewWalletFormComponent = () => {
     };
 
     let navigationParams: any = [true, 'WalletOverview', 'md-chevron-up'];
-    const [value, setValue] = useState(null);
 
     return (
         <View style={styles.container}>
 
             <NavigationContext.Provider value={navigationParams}>
                 <NavigationIconComponent />
-            </NavigationContext.Provider> 
+            </NavigationContext.Provider>
 
             <View style={styles.form}>
-            <Dropdown
-                style={styles.dropdown}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={interfaces}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Interface"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                    setValue(item.value);
-                }}
-                renderLeftIcon={() => (
-                    <Icon
-                        style={styles.iconStyle}
-                        name='md-flower'
-                        type='ionicon'
-                        size={21}
-                        color='black'
+
+                <Form style={styles.form} buttonStyle={styles.button} onButtonPress={() => onSubmit()}>
+                    <Picker
+                        items={[
+                            { label: 'Lnd', value: 'Lnd' },
+                            { label: 'LndHub', value: 'LndHub' },
+                            { label: 'Eclair', value: 'Eclair' },
+                        ]}
+                        buttonStyle={styles.picker}
+                        iconWrapperStyle={styles.pickerIcon}
+                        placeholder="Interface"
+                        selectedValue={interfaceName}
+                        onSelection={(item) => setInterfaceName(item.value)}
                     />
-                )}
-            />
-        
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input
-                                        style={styles.input}
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value}
-                                        placeholder="Wallet name"
-                                        leftIcon={
-                                            <Icon
-                                                name='md-flash'
-                                                type='ionicon'
-                                                size={24}
-                                                color='black'
-                                            />
-                                        }
-                                    />
-                                )}
-                                name="name"
-            />
-            {errors.name && <Text>This is required.</Text>}
-
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input
-                                        style={styles.input}
-                                        onBlur={onBlur}
-                                        onChangeText={onChange}
-                                        value={value}
-                                        placeholder="Url"
-                                        defaultValue="https://namdj63hutqhnx2nf3tu44tbq6bw64q7zbma5dq6vae66toprakyzqqd.onion:8080'"
-                                        leftIcon={
-                                            <Icon
-                                                name='md-globe'
-                                                type='ionicon'
-                                                size={24}
-                                                color='black'
-                                            />
-                                        }
-                                    />
-                                )}
-                                name="url"
-                            />
-                            {errors.url && <Text>This is required.</Text>}
-
-                            <Controller
-                                control={control}
-                                rules={{
-                                    maxLength: 200,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input
-                                        style={styles.input}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        multiline={true}
-                                        placeholder="Macaroon Hex"
-                                        defaultValue="0201036c6e6402f801030a108d2a861dd90e17121432311dc248787d1201301a160a0761646472657373120472656164120577726974651a130a04696e666f120472656164120577726974651a170a08696e766f69636573120472656164120577726974651a210a086d616361726f6f6e120867656e6572617465120472656164120577726974651a160a076d657373616765120472656164120577726974651a170a086f6666636861696e120472656164120577726974651a160a076f6e636861696e120472656164120577726974651a140a057065657273120472656164120577726974651a180a067369676e6572120867656e657261746512047265616400000620c827db1e3a48ecb803b3a9837e5fc7da9781805a3506681f3b766e382a1a3781"
-                                        leftIcon={
-                                            <Icon
-                                                name='md-finger-print'
-                                                type='ionicon'
-                                                size={24}
-                                                color='black'
-                                            />
-                                        }
-                                    />
-                                )}
-                                name="macaroon"
-            />
-            {errors.name && <Text>This is required.</Text>}
-
-
-            <Button
-                title="Save Wallet"
-                style={styles.button}
-                buttonStyle={{ backgroundColor: 'black' }}
-                onPress={handleSubmit(onSubmit)}
-                /></View>
+                    <FormItem
+                        isRequired
+                        value={walletName}
+                        textInputStyle={styles.input}
+                        showErrorIcon={false}
+                        errorBorderColor="white"
+                        placeholder="Wallet Name"
+                        onChangeText={(walletName) => setWalletName(walletName)}
+                        asterik
+                        ref={walletNameInput}
+                    />
+                    <FormItem
+                        isRequired
+                        value={url}
+                        textInputStyle={styles.input}
+                        showErrorIcon={false}
+                        placeholder="Url"
+                        onChangeText={(url) => setUrl(url)}
+                        asterik
+                        ref={urlInput}
+                    />
+                    <FormItem
+                        isRequired
+                        value={macaroon}
+                        textInputStyle={styles.input}
+                        showErrorIcon={false}
+                        placeholder="Macaroon"
+                        textArea={true}
+                        onChangeText={(macaroon) => setMacaroon(macaroon)}
+                        asterik
+                        ref={macaroonInput}
+                    />
+                    {/* <Modal show isRequired>
+                        <View style={{ }}>
+                            <Text>I am inside a modal!</Text>
+                        </View>
+                    </Modal> */}
+                </Form>
+            </View>
         </View>
     );
 }
@@ -188,46 +122,33 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     form: {
-        marginTop: 30
+        marginTop: 20
     },
     input: {
-        padding: 10,
-        margin: 10,
-        width: '100%',
-        borderColor: 'red'
+        padding: 15,
+        backgroundColor: "#EEEEEE",
+        color: 'black',
+    },
+    picker: {
+        backgroundColor: '#EEEEEE',
+        margin: 8,
+        paddingLeft: 15,
+    },
+    pickerIcon: {
+        backgroundColor: '#EEEEEE',
     },
     button: {
         backgroundColor: 'black',
         color: 'black',
         padding: 10,
+        marginTop: 5,
+        margin: 8
     },
-    dropdown: {
-        height: 70,
-        paddingHorizontal: 8,
-        marginBottom: 25,
-        paddingLeft: 10,
-        borderColor: 'gray',
-        borderBottomWidth: 0.5,
-        borderRadius: 8,
+    error: {
+        marginTop: -15,
+        marginLeft: 10,
+        color: 'red'
     },
-    placeholderStyle: {
-        fontSize: 18,
-        color: 'grey'
-    },
-    selectedTextStyle: {
-        fontSize: 16,
-    },
-    iconStyle: {
-        width: 20,
-        height: 20,
-        marginRight: 28,
-
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: 18,
-    },
-
 });
 
 export default NewWalletFormComponent;

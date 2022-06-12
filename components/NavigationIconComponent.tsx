@@ -39,7 +39,7 @@ const NavigationIconComponent = () => {
 
 const styles = StyleSheet.create({
     icon: {
-        marginTop: 10,
+        marginTop: 20,
         textAlign: 'center',
         color: 'black'
     }

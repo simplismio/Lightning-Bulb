@@ -8,7 +8,7 @@ const useWalletBalanceHook = (_name: any, _api: any) => {
 
     let [balance, setBalance] = useState('');
     let [pending, setPending] = useState(false);
-    let [errorDetails, setError] = useState('');
+    let [error, setError] = useState('');
 
     const tor = Tor({
         stopDaemonOnBackground: true, // Auto shut down daemon when app in background
@@ -18,22 +18,25 @@ const useWalletBalanceHook = (_name: any, _api: any) => {
 
         const loadNodeConnectionDetails = async (__name, __api: any) => {    
       
-                let walletDetailsArray: any = await storage.getArrayAsync(__name);
+            let walletDetailsArray: any = await storage.getArrayAsync(__name);
+            //  console.log(walletDetailsArray);
                 setPending(true);
 
                 const socksProxy = await tor.startIfNotStarted();
                 console.log('Tor proxy ' + socksProxy + ' started');
 
                 try {
-                    const rawResponse = await tor.get(walletDetailsArray[1] + __api, { 'Grpc-Metadata-macaroon': walletDetailsArray[2], 'Content-Type': 'application/json' });
+                    const rawResponse = await tor.get(walletDetailsArray[2] + __api, { 'Grpc-Metadata-macaroon': walletDetailsArray[3], 'Content-Type': 'application/json' });
                     const response: any = rawResponse;
+                    console.log(response);
                     setBalance(response['json']['balance']);
+                    setError('');
                     setPending(false);
                 } catch (error) {
                     console.log(error);
-                    const errorMessage: any = error;
-
-                    setError(errorMessage);
+                    setBalance('nill');
+                    setError('Something went wrong');
+                    setPending(false);
                 }
                 tor.stopIfRunning(); 
         }
@@ -41,7 +44,7 @@ const useWalletBalanceHook = (_name: any, _api: any) => {
 
     }, []);
 
-    return { balance, pending, errorDetails };
+    return { balance, pending, error };
 
 }
 

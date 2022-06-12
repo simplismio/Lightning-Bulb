@@ -13,9 +13,9 @@ const useLoadAllWalletsDetailsHook = () => {
             // storage.clearMemoryCache();
 
             let allNodesRaw: any = storage.indexer.arrays.getAll();
-            if (allNodesRaw['_W'] != undefined) {
-                console.log('toch wel')
-                setAllNodes(allNodesRaw['_W']['_W']);
+            //console.log(allNodesRaw);
+            if (allNodesRaw['_j'] != undefined) {
+                setAllNodes(allNodesRaw['_j']['_j']);
             }
             else {
                 setAllNodes([]);

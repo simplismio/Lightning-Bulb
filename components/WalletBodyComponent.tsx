@@ -6,15 +6,16 @@ import ActiveWalletContext from "../contexts/ActiveWalletContext";
 
 const WalletBodyComponent = () => {
 
-    let wallet: string = useContext(ActiveWalletContext);
+    let wallet: any = useContext(ActiveWalletContext);
     let balance: any = useWalletBalanceHook(wallet, '/v1/balance/channels');
 
     return (
         <View>
-            {balance['pending'] == true ? <Text></Text> : <Text style={styles.name}>{wallet}</Text>}
-            {balance['pending'] == true ? <ActivityIndicator style={styles.indicator} size="large" /> : <Text style={styles.title}>{balance['balance']}</Text>}
-            {balance['errorDetails'] != null ? <Text style={styles.title}>{balance['errorDetails']}</Text> : <Text style={styles.title}></Text>}
-            {balance['pending'] == true ? <Text style={styles.title}></Text> : <Text style={styles.subtitle}>Sats</Text>}
+            {balance['pending'] == true && balance['error'] == null? <Text></Text> : <Text style={styles.name}>{wallet}</Text>}
+            {balance['pending'] == true ? <ActivityIndicator style={styles.indicator} size="large" /> : <Text></Text>}
+            {balance['pending'] == false && balance['error'] == null ? <Text style={styles.balance}>{balance['balance']}</Text> : <Text></Text>}
+            {balance['pending'] == false && balance['error'] != null ? <Text style={styles.error}>{balance['error']}</Text> : <Text></Text>}
+            {balance['pending'] == false && balance['error'] == null ? <Text style={styles.sats}>Sats</Text> : <Text></Text>}
         </View>
     );
 }
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center',
     },
-    title: {
+    balance: {
         color: 'black',
         fontWeight: 'bold',
         fontSize: 60,
@@ -38,12 +39,18 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginBottom: -30
     },
-    subtitle: {
+    sats: {
         color: 'black',
         fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
     },
+    error: {
+        color: 'red',
+        fontWeight: 'bold',
+        fontSize: 15,
+        textAlign: 'center',
+    }
 });
 
 export default WalletBodyComponent;

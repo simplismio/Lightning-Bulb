@@ -4,6 +4,7 @@ import WalletBody from './WalletBodyComponent'
 import WalletSendReceiveButtons from './WalletSendReceiveButtonsComponent'
 import NavigationContext from "../contexts/NavigationContext";
 import NavigationIconComponent from "./NavigationIconComponent";
+import ActiveWalletContext from "../contexts/ActiveWalletContext";
 
 const WalletComponent = () => {
 
@@ -19,7 +20,7 @@ const WalletComponent = () => {
             </View>
             <View style={styles.walletBalance}>
                 <WalletBody />
-            </View>
+                </View>
             <View style={styles.sendReceiveButtons}>
                 <WalletSendReceiveButtons />
             </View>

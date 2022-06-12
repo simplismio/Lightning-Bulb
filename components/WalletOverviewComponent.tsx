@@ -6,7 +6,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../App";
 import { Card } from "@rneui/themed";
 import { ScrollView } from "react-native-gesture-handler";
-import ActiveWalletContext from "../contexts/ActiveWalletContext";
 import NavigationContext from "../contexts/NavigationContext";
 import NavigationIconComponent from "./NavigationIconComponent";
 
@@ -14,30 +13,29 @@ const WalletOverviewComponent = () => {
     let allWalletsRaw: any = useAllWalletsDetails();
     let allWallets: any = allWalletsRaw['allNodes'];
     let navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
-    let activeWallet: string; 
     let navigationParamsTransactions: any = [false, 'WalletCrud', 'md-add-circle-outline'];
+    let activeWallet: string; 
+
 
     const onClick = async (name: any) => {
         activeWallet = name['name']
-        navigation.navigate('Wallet')
+        //console.log(activeWallet);
+        navigation.navigate('Wallet', {activeWallet: activeWallet})
     };
-
-    console.log(allWallets == undefined);
 
     return (
         <ScrollView>
             <View style={styles.container}>
                     <View style={styles.list}>
-                        {allWallets.length > 0 ? allWallets.map((key: any) => {
+                    {allWallets.length > 0 ? allWallets.map((key: any) => {
                             return (
-                                <ActiveWalletContext.Provider key={key} value={activeWallet}>
                                     <Pressable key={key} onPress={() => {
-                                        onClick({ name: key[1][0] })
-                                    }}>
-                                        <Card.Title style={styles.card}>{key[1][0]}
+                                        onClick({ name: key[1][1] })
+                                }}>
+                                        <Card.Title style={styles.card}>{key[1][1]}
                                         </Card.Title>
+
                                     </Pressable>
-                                </ActiveWalletContext.Provider>
                             )
                         }) : <Text style={styles.empty}>Please add a wallet</Text>} 
                     </View>
