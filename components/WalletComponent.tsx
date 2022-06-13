@@ -12,8 +12,8 @@ const WalletComponent = () => {
     let wallet: any = useContext(ActiveWalletContext);
     let response: any = useWalletFetchHook(wallet, '/v1/balance/channels');
 
-    let navigationParamsWallets: any = [true, 'WalletOverview', 'md-chevron-up'];
-    let navigationParamsTransactions: any = [false, 'WalletTransactionOverview', 'md-chevron-down', wallet];
+    let navigationParamsWallets: any = ['pop', 'WalletOverview', 'md-chevron-up'];
+    let navigationParamsTransactions: any = ['push', 'WalletTransactionOverview', 'md-chevron-down', wallet];
 
     return (
         <View style={styles.container}>

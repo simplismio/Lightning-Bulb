@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import React, { useRef, useState } from 'react';
 import { MMKVLoader } from 'react-native-mmkv-storage';
 import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../App";
-import { Form, FormItem, Picker, Modal } from 'react-native-form-component';
-import { Button } from '@rneui/base';
+import { Form, FormItem, Picker } from 'react-native-form-component';
 import NavigationIconComponent from "./NavigationIconComponent";
 import NavigationContext from "../contexts/NavigationContext";
+import tw from 'twrnc';
 
 const NewWalletFormComponent = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
@@ -23,14 +23,7 @@ const NewWalletFormComponent = () => {
     const [url, setUrl] = useState('');
     const [macaroon, setMacaroon] = useState('');
 
-    console.log(interfaceName);
-    console.log(walletName);
-    console.log(url);
-    console.log(macaroon);
-
     const onSubmit = async () => {
-
-        console.log('Ready to submit');
 
         var nodeDetailsObject = [{
             interface: 'Lnd',
@@ -43,42 +36,42 @@ const NewWalletFormComponent = () => {
 
         try {
             await storage.setMapAsync(walletName, nodeDetailsObject);
-            navigation.goBack;
-            // navigation.navigate('WalletOverview')
+            navigation.replace('WalletOverview');
         }
         catch (err: any) {
             console.log(err.message);
         }
     };
 
-    let navigationParams: any = [true, 'WalletOverview', 'md-chevron-up'];
+    let navigationParams: any = ['pop', 'WalletOverview', 'md-chevron-up'];
 
     return (
-        <View style={styles.container}>
+        <View style={tw`flex-1 bg-white`}>
 
             <NavigationContext.Provider value={navigationParams}>
                 <NavigationIconComponent />
             </NavigationContext.Provider>
 
-            <View style={styles.form}>
+            <View style={tw`p-5 mt--5`}>
+                <Text style={tw`ml-2 pt-15 text-xl font-black mb-5`}>New Wallet</Text>
 
-                <Form style={styles.form} buttonStyle={styles.button} onButtonPress={() => onSubmit()}>
+                <Form buttonStyle={tw`bg-black m-2 mt--3`} buttonText="Save" onButtonPress={() => onSubmit()}>
                     <Picker
                         items={[
                             { label: 'Lnd', value: 'Lnd' },
                             { label: 'LndHub', value: 'LndHub' },
                             { label: 'Eclair', value: 'Eclair' },
                         ]}
-                        buttonStyle={styles.picker}
-                        iconWrapperStyle={styles.pickerIcon}
+                        buttonStyle={tw`border-2 m-2 pl-3 rounded-md`}
+                        iconWrapperStyle={tw`bg-white`}
                         placeholder="Interface"
                         selectedValue={interfaceName}
-                        onSelection={(item) => setInterfaceName(item.value)}
+                        onSelection={(item: any) => setInterfaceName(item.value)}
                     />
                     <FormItem
                         isRequired
                         value={walletName}
-                        textInputStyle={styles.input}
+                        textInputStyle={tw`border-2 pl-3 mt-5 rounded-md`}
                         showErrorIcon={false}
                         errorBorderColor="white"
                         placeholder="Wallet Name"
@@ -89,7 +82,7 @@ const NewWalletFormComponent = () => {
                     <FormItem
                         isRequired
                         value={url}
-                        textInputStyle={styles.input}
+                        textInputStyle={tw`border-2 pl-3 rounded-md`}
                         showErrorIcon={false}
                         placeholder="Url"
                         onChangeText={(url) => setUrl(url)}
@@ -99,7 +92,7 @@ const NewWalletFormComponent = () => {
                     <FormItem
                         isRequired
                         value={macaroon}
-                        textInputStyle={styles.input}
+                        textInputStyle={tw`border-2 pl-3 pt-3 mt--5 rounded-md`}
                         showErrorIcon={false}
                         placeholder="Macaroon"
                         textArea={true}
@@ -117,41 +110,5 @@ const NewWalletFormComponent = () => {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 30,
-        backgroundColor: 'white',
-    },
-    form: {
-        marginTop: 20
-    },
-    input: {
-        padding: 15,
-        backgroundColor: "#EEEEEE",
-        color: 'black',
-    },
-    picker: {
-        backgroundColor: '#EEEEEE',
-        margin: 8,
-        paddingLeft: 15,
-    },
-    pickerIcon: {
-        backgroundColor: '#EEEEEE',
-    },
-    button: {
-        backgroundColor: 'black',
-        color: 'black',
-        padding: 10,
-        marginTop: 5,
-        margin: 8
-    },
-    error: {
-        marginTop: -15,
-        marginLeft: 10,
-        color: 'red'
-    },
-});
 
 export default NewWalletFormComponent;

@@ -56,7 +56,7 @@ const useWalletFetchHook = (_name: any, _api: any) => {
                 } catch (error) {
                     console.log(error);
 
-                    setData('Zero');
+                    //setData('Unknown');
                     setError(true);
                     setPending(false);
                 }

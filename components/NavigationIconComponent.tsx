@@ -10,30 +10,36 @@ const NavigationIconComponent = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
     let navigationParams: any = useContext(NavigationContext);
-    let back: boolean = navigationParams[0] ;
-    let direction: any = navigationParams[1];
-    let icon: any = navigationParams[2];
+    let action: string = navigationParams[0];
+    let route: any = navigationParams[1] != null ? navigationParams[1] : null
+    let icon: string = navigationParams[2];
     let params: any = navigationParams[3] != null ? navigationParams[3] : null
 
     return (
         <View>
-            {back == true ? <Icon
+           <Icon
                 name={icon}
                 type='ionicon'
                 size={50}
                 style={styles.icon}
                 onPress={() => {
-                    params != null ? navigation.navigate(direction, { params: params }) : navigation.navigate(direction) //TODO: include option to push and pop
+                    switch (action) {
+                        case 'navigate':
+                            params != null ? navigation.navigate(route, { params: params }) : navigation.navigate(route)
+                            break;
+                        case 'push':
+                            params != null ? navigation.push(route, { params: params }) : navigation.push(route)
+                            break;
+                        case 'replace':
+                            params != null ? navigation.replace(route, { params: params }) : navigation.replace(route)
+                            break;
+                        case 'pop':
+                            params != null ? navigation.pop() : navigation.pop()
+                            break;
+                        default:
+                    }
                 }}
-            /> : <Icon
-                    name={icon}
-                type='ionicon'
-                size={50}
-                style={styles.icon}
-                onPress={() => {
-                    params != null ? navigation.navigate(direction, { params: params }) : navigation.navigate(direction) //TODO: include option to push and pop
-                }}
-            />}
+            /> 
         </View>
     );
 }
