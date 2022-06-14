@@ -6,6 +6,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import WalletTransactionOverviewScreen from './screens/WalletTransactionOverviewScreen';
 import WalletOverviewScreen from './screens/WalletOverviewScreen';
 import WalletCrudScreen from './screens/WalletCrudScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
 export type RootStackParams = {
   Wallet: {
@@ -18,6 +19,7 @@ export type RootStackParams = {
     action: string;
   }
   WalletOverview: undefined;
+  Settings: undefined;
 }
 
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -50,6 +52,12 @@ export default function App() {
           }}
           />
           <Stack.Screen name="WalletCrud" component={WalletCrudScreen} options={{
+            headerShown: false,
+            presentation: 'card',
+            animationTypeForReplace: 'push',
+            animation: 'slide_from_bottom',
+          }} />
+          <Stack.Screen name="Settings" component={SettingsScreen} options={{
             headerShown: false,
             presentation: 'card',
             animationTypeForReplace: 'push',

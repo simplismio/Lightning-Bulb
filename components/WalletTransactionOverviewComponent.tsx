@@ -4,15 +4,20 @@ import ActiveWalletContext from "../contexts/ActiveWalletContext";
 import useWalletFetchHook from "../hooks/useWalletFetchHook";
 import NavigationContext from "../contexts/NavigationContext";
 import NavigationIconComponent from "./NavigationIconComponent";
-import { Card } from "@rneui/themed";
 
 const WalletTransactionOverviewComponent = () => {
 
     let wallet: any = useContext(ActiveWalletContext);
     let response = useWalletFetchHook(wallet, '/v1/transactions');
 
-    if (response["data"] != undefined) {
-        console.log(response["data"]);
+    if (response["data"]["json"] != undefined) {
+        //console.log(response["data"]["json"]["transactions"][0]["amount"]);
+
+        response["data"]["json"]["transactions"].map((key: any) => {
+            console.log(key['amount'])
+        });
+
+
     }
 
     let navigationParams: any = ['pop', 'Wallet', 'md-chevron-up', wallet];

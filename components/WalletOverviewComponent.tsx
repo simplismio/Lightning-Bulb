@@ -23,11 +23,16 @@ const WalletOverviewComponent = () => {
         navigation.push('Wallet', { params: activeWallet })
     };
 
+    let navigationParams: any = ['navigate', 'Settings', 'md-chevron-up'];
+
     return (
         <ScrollView>
-        <View style={tw`flex-1`}>
-            <View><Text style={tw`pl-10 pt-15 text-xl font-black`}>Wallets</Text></View>
-            <View style={tw`flex-1 mt-5`}>
+            <View style={tw`flex-1`}>
+                <NavigationContext.Provider value={navigationParams}>
+                    { <NavigationIconComponent />}
+                </NavigationContext.Provider> 
+                <View><Text style={tw`pt-5 text-xl font-black text-center`}>Wallets</Text></View>
+                <View style={tw`flex-1 mt-5 items-center`}>
                     {allWallets.length > 0 ? allWallets.map((key: any) => {
                             return (
                                 <Pressable key={key} onPress={() => {
