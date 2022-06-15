@@ -8,41 +8,45 @@ import NavigationIconComponent from "./NavigationIconComponent";
 const WalletTransactionOverviewComponent = () => {
 
     let wallet: any = useContext(ActiveWalletContext);
-    let response = useWalletFetchHook(wallet, '/v1/transactions');
+    let response = useWalletFetchHook(wallet, '/v1/payments');
+    let transactions: any = '';
 
-    if (response["data"]["json"] != undefined) {
-        //console.log(response["data"]["json"]["transactions"][0]["amount"]);
-
-        response["data"]["json"]["transactions"].map((key: any) => {
-            console.log(key['amount'])
-        });
-
-
+    if (response['data'] != undefined) {
+        if (response['data']['json'] != undefined) {
+            transactions = response['data'] != undefined ? response['data']['json']['payments'].reverse() : '';
+        }
     }
+
+    console.log(transactions == '');
+
+    // if (response["data"]["json"] != undefined) {
+    //     //console.log(response["data"]["json"]["transactions"][0]["amount"]);
+
+    //     response["data"]["json"]["transactions"].map((key: any) => {
+    //         console.log(key['amount'])
+    //     });
+    // }
 
     let navigationParams: any = ['pop', 'Wallet', 'md-chevron-up', wallet];
 
     return (
         <View>
-            <Text>Ok</Text>
             <View>
                 <NavigationContext.Provider value={navigationParams}>
                     <NavigationIconComponent />
                 </NavigationContext.Provider> 
-                {/* <View>
-                    {response["data"]["json"] != undefined ? response["data"]["json"]["transactions"].length > 0 ? response["data"]["json"]["transactions"].map((key: any) => {
 
-                        // console.log(key);
+                <View>
+                    {transactions != '' ? response["data"]["json"]["payments"].map((key: any) => {
+
+                        console.log(key);
                         
                         return (
-                                <Card.Title >{key}
-                                </Card.Title>
+                                <Text >{key['value']}</Text>
                         )
-                    }) : <Text style={styles.empty}>No transactions</Text> : <Text>Undefined</Text>} 
-                </View> */}
+                    }) : <Text style={styles.empty}>No transactions</Text> } 
+                </View>
             </View>
-            {/* {transactions['pending'] == true ? <ActivityIndicator style={styles.indicator} size="large" /> : <Text ></Text>}
-            {transactions['lightningTransactions'] == null && transactions['pending'] == false ? <Text>No transactions</Text> : <Text>{transactions['lightningTransactions']}</Text>} */}
         </View>
     );
 }
