@@ -1,44 +1,19 @@
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import { View, Pressable, Text } from "react-native";
 import React from 'react';
+import tw from 'twrnc';
 
 const WalletSendReceiveButtonsComponent = () => {
 
     return (
-        <View style={styles.container}>
-            <Pressable style={styles.button}>
-                <Text style={styles.text}>Receive</Text>
+        <View style={tw`flex flex-row justify-center`}>
+            <Pressable style={tw`bg-black pt-5 pb-5 pl-10 pr-10 rounded-md mr-2 min-w-30`}>
+                <Text style={tw`text-center text-white text-xl font-bold`}>Receive</Text>
             </Pressable>
-            <Pressable style={styles.button}>
-                <Text style={styles.text}>Send</Text>
+            <Pressable style={tw`bg-black pt-5 pb-5 pl-10 pr-10 rounded-md ml-2 min-w-38`}>
+                <Text style={tw`text-center text-white text-xl font-bold`}>Send</Text>
             </Pressable>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 5,
-        elevation: 3,
-        backgroundColor: 'black',
-        width: 150,
-        margin: 10
-    },
-    text: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
-    },
-});
 
 export default WalletSendReceiveButtonsComponent;

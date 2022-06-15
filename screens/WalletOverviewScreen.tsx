@@ -1,21 +1,15 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import WalletOverview from "../components/WalletOverviewComponent";
+import tw from 'twrnc';
 
 const WalletOverviewScreen = () => {
 
     return (
-        <View style={styles.container}>
+        <View style={tw`flex-1 bg-white`}>
             <WalletOverview />
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-});
 
 export default WalletOverviewScreen;

@@ -1,20 +1,15 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import NewWalletForm from "../components/NewWalletFormComponent";
+import tw from 'twrnc';
 
 const WalletCrudScreen = () => {
 
     return (
-        <View style={styles.container}>
+        <View style={tw`flex-1 bg-white`}>
             <NewWalletForm />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-});
 
 export default WalletCrudScreen;

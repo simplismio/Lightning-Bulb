@@ -1,22 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import SettingsComponent from "../components/SettingsComponent";
+import tw from 'twrnc';
 
 const SettingsScreen = () => {
 
 
     return (
-            <View style={styles.container}>
+        <View style={tw`flex-5 bg-white`}>
                 <SettingsComponent />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 5,
-        backgroundColor: 'white'
-    },
-});
 
 export default SettingsScreen;

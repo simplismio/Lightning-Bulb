@@ -1,10 +1,11 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import React, { useContext} from 'react';
 import { Icon } from "@rneui/themed";
 import { useNavigation } from '@react-navigation/core';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../App";
 import NavigationContext from "../contexts/NavigationContext";
+import tw from 'twrnc';
 
 const NavigationIconComponent = () => {
 
@@ -21,7 +22,7 @@ const NavigationIconComponent = () => {
                 name={icon}
                 type='ionicon'
                 size={50}
-                style={styles.icon}
+                style={tw`mt-5 text-center`}
                 onPress={() => {
                     switch (action) {
                         case 'navigate':
@@ -43,13 +44,5 @@ const NavigationIconComponent = () => {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    icon: {
-        marginTop: 20,
-        textAlign: 'center',
-        color: 'black'
-    }
-});
 
 export default NavigationIconComponent;
