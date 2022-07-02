@@ -25,7 +25,6 @@ const useWalletFetchHook = (_name: any, _api: any) => {
             });
             const socksProxy = await tor.startIfNotStarted();
             console.log('Tor proxy ' + socksProxy + ' started');
-
             try {
                 localResponse = await tor.get(walletDetailsObject[0]['url'] + api, { 'Grpc-Metadata-macaroon': walletDetailsObject[0]['macaroon'], 'Content-Type': 'application/json' });
             } catch (error) {
@@ -42,11 +41,12 @@ const useWalletFetchHook = (_name: any, _api: any) => {
             let walletDetailsObject: any = await storage.getMapAsync(name);
 
                 setPending(true);
-                setStatus('Busy')
+                setStatus('Preparing')
 
-                try {
+            try {
+                    setStatus('Connecting')
                     let localResponse = await torRequest(walletDetailsObject);
-                    
+                    setStatus('Processing')
                     let response: any = localResponse;
 
                     setData(response);
